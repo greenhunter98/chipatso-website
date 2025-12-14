@@ -1,26 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #081026;
+  --pale-blue: #E6F2F6;
+  --accent: #FF7B3E;
+  --accent-dark: #F05A2B;
+  --card-bg: #ffffff;
+  --muted: #4E8C9F;
+  --text-dark: #0A0D25;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  height: 100%;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--pale-blue);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Utility overrides to match Figma design */
+.container-max {
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.site-header {
+  background: var(--muted);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
+
+.site-footer {
+  background: var(--muted);
+  color: white;
+}
+
+/* Hero background with dim overlay */
+.hero-bg {
+  /* Only gradient overlay here; image is rendered in the component so we avoid repeated backgrounds */
+  background: linear-gradient(180deg, rgba(8,16,38,0.75), rgba(8,16,38,0.75));
+}
+
+/* The hero heading style - very large in the design */
+.hero-heading {
+  font-weight: 800;
+  line-height: 1.02;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  color: white;
+}
+
+.muted-text {
+  color: #e4e9ecf8;
+}
+
+/* Card style used across about/services */
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(70,108,128,0.12);
+  min-height: 220px;
+}
+
+/* Team */
+.team-card { text-align: center; }
+.team-card .w-24 { width: 96px; height: 96px; box-shadow: 0 6px 16px rgba(4,18,30,0.06); transition: transform .12s ease, box-shadow .12s ease; }
+.team-card:hover .w-24 { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 30px rgba(4,18,30,0.12); }
+.team-card .text-muted-text { color: #97a5ad; }
+.team-card .social-square { width: 36px; height: 36px; border-radius: 10px; background: var(--navy); display:inline-flex; align-items:center; justify-content:center; color: white; }
+.team-card .social-square svg { width: 18px; height: 18px; fill: white; }
+.team-card .social-square:hover { background: rgba(8,16,38,0.9); transform: translateY(-3px); }
+/* Make team cards pop a little more */
+.team-card { transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s cubic-bezier(.2,.9,.2,1); }
+.team-card:hover { transform: translateY(-6px) scale(1.035); box-shadow: 0 18px 36px rgba(4,18,30,0.12); }
+
+/* Rotate order on small screens to make the grid look varied */
+@media (max-width: 640px) {
+  .team-grid .team-card:nth-child(1) { order: 2; }
+  .team-grid .team-card:nth-child(2) { order: 3; }
+  .team-grid .team-card:nth-child(3) { order: 4; }
+  .team-grid .team-card:nth-child(4) { order: 1; }
+}
+
+/* Nav link style with accent underline on hover */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  transition: color .2s ease, transform .12s ease;
+}
+/* Mobile nav dropdown styles (use Tailwind for visibility, but custom styles for appearance) */
+.site-header .mobile-nav {
+  box-shadow: 0 8px 24px rgba(8,16,38,0.18);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.site-header .btn-accent {
+  margin-top: 0.5rem;
+}
+
+.site-header .mobile-nav .nav-link {
+  font-size: 1.1rem;
+  padding-left: 0.5rem;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  border-radius: 3px;
+  bottom: -6px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform .18s ease, background-color .18s ease;
+}
+.nav-link:hover { color: #ffffff; transform: translateY(-2px); }
+.nav-link:hover::after { transform: scaleX(1); background: var(--accent); }
+.nav-link.active::after, .nav-link[aria-current='page']::after { transform: scaleX(1); background: var(--accent); }
+
+/* Card hover elevations */
+.feature-card { transition: transform .12s ease, box-shadow .12s ease; }
+.feature-card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(16,36,50,0.08); }
+
+/* Social icon hover */
+.social-square { transition: transform .12s ease, background-color .12s ease; }
+.social-square:hover { transform: translateY(-3px); background: var(--navy); }
+
+/* Icon pill hover (for the small icons inside cards) */
+.icon-pill { transition: transform .12s ease, box-shadow .12s ease; }
+.icon-pill:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(12,27,46,0.12); }
+
+/* Button focus accessibility */
+.btn-accent:focus { outline: 3px solid rgba(255,123,62,0.16); outline-offset: 4px; }
+
+
+/* Small icon pill used inside cards */
+.icon-pill {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--navy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* CTA button style */
+.btn-accent {
+  background: var(--accent);
+  color: white;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(240,90,43,0.12);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-accent:hover { background: var(--accent-dark) }
+.btn-muted {
+  background: var(--navy);
+  color: white;
+  padding: 0.65rem 1.15rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(240,90,43,0.12);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-muted:hover { background: var(--muted) }
+
+/* small orange bullet list style */
+.orange-bullet li {
+  list-style: none;
+  padding-left: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+.orange-bullet li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 9999px;
+  margin-right: 0.75rem;
+}
+
+/* Contact form inputs */
+.input-pill {
+  background: #f3f6f8;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(8,16,38,0.04);
+}
+
+/* Small visual detail for footer columns */
+.footer-col h4 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.service-card-icon {
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #0c1b2e; /* small dark background inside card */
+  color: var(--accent);
+  transition: transform .12s ease, background .12s ease;
+}
+.group:hover .service-card-icon { transform: translateY(-6px); background: rgba(255,123,62,0.08); }
+
+/* adjust header spacing for sticky top */
+.header-height { height: 74px; }
+
+/* small rounded square buttons for social icons */
+.social-square { width: 40px; height: 40px; background: var(--accent); border-radius: 8px; display:inline-flex; align-items:center; justify-content:center; transition: transform .12s ease, background .12s ease, box-shadow .12s ease; }
+.social-square svg { width: 18px; height: 18px; fill: white; }
+.social-square:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(16,36,50,0.08); }
+
+.social-square.twitter { background: #1DA1F2; }
+.social-square.twitter:hover { background: #1297E3; }
+.social-square.linkedin { background: #0077B5; }
+.social-square.linkedin:hover { background: #0066a3; }
+.social-square.facebook { background: #1877F2; }
+.social-square.facebook:hover { background: #106fe3; }
